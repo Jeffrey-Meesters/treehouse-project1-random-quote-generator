@@ -10,6 +10,7 @@
 ## How to use:
 * Clone this repo to your own computer
 * Change Directory into the root of this repo
+* Open the project in your code editor
 * Right-click on the index.html file
 * Click on show in finder (mac)
 * In finder double click on the file
