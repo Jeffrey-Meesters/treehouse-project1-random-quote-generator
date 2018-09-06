@@ -1,47 +1,66 @@
 // FSJS - Random Quote Generator
 
+/* I know
+ I should write multiline comments
+ like this,,,
+ but I don't like it
+*/
+
+//////////////////////////////////////////////////////////////////
+// I am shooting for the 'Exceeds Expectations' grade here! :)  //
+//////////////////////////////////////////////////////////////////
+
 // Create the array of quote objects and name it quotes
+// because of lack of inspiration I got my qoutes from here:
+// https://www.brainyquote.com/
+// pinterest
+// google
 var quotes = [
     {
-        quote: "some string1",
-        source: "Jeffrey",
+        quote: "One good thing about music, when it hits you, you feel no pain.",
+        source: "Bob Marley",
         citation: null,
-        date: "12/12/12"
+        date: null,
+        categorization: 'music, ragea, good'
     },
     {
-        quote: "some string2",
-        source: "Jeffrey",
-        citation: 'skywards',
-        date: "12/12/12"
+        quote: "The beginning is the most important part of the work",
+        source: "Plato",
+        citation: null,
+        date: null,
+        categorization: 'philosophy'
     },
     {
-        quote: "some string3",
-        source: "Jeffrey",
+        quote: "Don't cry because it's over, smile because it happened.",
+        source: "Dr. Seuss",
         citation: null,
-        date: "12/12/12"
+        date: null,
+        categorization: ['happy', 'life', 'smile']
     },
     {
-        quote: "some string4",
-        source: "Jeffrey",
-        citation: null,
-        date: "12/12/12"
+        quote: "The only thing we have to fear is fear itself.",
+        source: "President Roosevelt",
+        citation: "Roosevelt's Inaugural Address",
+        date: "1933",
+        categorization: 'presidents'
     },
     {
-        quote: "some string5",
-        source: "Jeffrey",
-        citation: null,
-        date: null
+        quote: "Trust me you can dance",
+        source: "Vodka",
+        citation: '<a href="https://nl.pinterest.com/pin/53761789279013988" target="_blank" >Pinterest<a>',
+        date: new Date().toLocaleDateString(),
+        categorization: 'fun'
     }
 ]
+// I did not know there are so many ways to get the current date: https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
 
-// When making the random RGB color I saw I could reuse this from the getRandomQuote function
+// When making the random RGB color I saw I could reuse this random number part from the getRandomQuote function
 function getRandomNumber(topNumber) {
     return Math.floor(Math.random() * topNumber);
 } 
 
 // Create the getRandomQuuote function and name it getRandomQuote
 function getRandomQuote() {
-    // Awesome I remembered this correctly form the course!
     // so randomNumbers gets a number between 0 and whatever the lenght of the quotes array is
     var randomNumber = getRandomNumber(quotes.length);
     // I get a randomQuote Object by taking my quotes array and add the randomNumber to it
@@ -58,50 +77,68 @@ function getRandomQuote() {
 function randomBackgroundColor() {
     // and RGB value ranges from 0 to 255
     // the topNumber should thus be 255
-    var red = getRandomNumber(255);
-    var green = getRandomNumber(255);
-    var blue = getRandomNumber(255);
-
-    return 'rgb('+red+','+green+','+blue+')';
+    return 'rgb('+ getRandomNumber(255)+','+getRandomNumber(255)+','+getRandomNumber(255)+')';
 }
 
-// I made the buildString function to build the correct template
+// I made a buildString function to build the correct template
 function buildTemplate(randomQuote) {
-    // flag the buildedString variable
     // build the html with the recieved argument
-
     // add the qoute to the stringTemplate variable
     var stringTemplate = '<p class="quote">'+randomQuote.quote+'</p>';
 
-    // Before I had the variables which are now within the if-statements
-    // at the top here as well, but they only need to be build when their data exist
-    // and a quote should always be there (in this exercise) so  I added it
-    // directly to the stringTemplate variable
-
     // I know this is not requested but i want it :)
     if(randomQuote.source) {
-        var sourceParagrap = '<p class="source">'+randomQuote.source;
-        stringTemplate += sourceParagrap;
+        stringTemplate += '<p class="source">'+randomQuote.source;
     }
 
     // if there is a citation add it to the template
     // I added the source check later as I felt like there can only be a citation when there is a source
     if(randomQuote.citation && randomQuote.source) {
-        var citationSpan = '<span class="citation">'+randomQuote.citation+'</span>';
-        stringTemplate += citationSpan;
+        stringTemplate += '<span class="citation">'+randomQuote.citation+'</span>';
     }
 
     // if therre is a date add it to the template
     // I added the source check later as I felt like there can only be a date when there is a source
     if(randomQuote.date && randomQuote.source) {
-        var dateSpan = '<span class="year">'+randomQuote.date+'</span>';
-        stringTemplate += dateSpan;
+        stringTemplate += '<span class="year">'+randomQuote.date+'</span>';
     }
 
     // if there is a source we need to close the p-tag
     if(randomQuote.source) {
-        var closingParagraph = '</p>';
-        stringTemplate += closingParagraph;
+        stringTemplate += '</p>';
+    }
+
+    if(randomQuote.categorization) {
+        var categorization = randomQuote.categorization;
+
+        if(typeof categorization === 'string') {
+            // I asume that when it is a string there is only one category
+            // that's how I set my array up any way :p
+            // also if it is a propperly formatted string it should not be a problem:
+            // categorization: 'fun, happy, JavaScipting'
+            // Now I had to change my qoutes array to show it!
+            stringTemplate += '<p>category: <i>'+categorization+'</i></p>'
+
+            // I wanted to use an array, but soon remembered that an array is of type object
+            // So I had to google for a solution
+            // StackOverflow: https://stackoverflow.com/questions/4775722/check-if-object-is-array
+            // and chacked if it is useable: https://caniuse.com/#search=isArray
+        } else if (Array.isArray(categorization)) {
+            // start categories template
+            stringTemplate += '<p>categories: <i>';
+            // create a loop to loop over the array
+            for(var i = 0; i < categorization.length; i += 1 ) {
+                // if not the last array item add a comma and white space
+                if(i !== (categorization.length - 1)) {
+                    stringTemplate += categorization[i]+", ";    
+                // else this is last array item and just add the array item
+                } else {
+                    stringTemplate += categorization[i];
+                }
+            }
+            // close categories template
+            stringTemplate += '</i></p>';
+        }
     }
 
     // return the builded template
@@ -126,7 +163,7 @@ function printQuote() {
 // I build an interval interface with 2 buttons
 // one for starting it and one for stoping it
 var interval;
-var intervalTime = 500;
+var intervalTime = 1000; // I can't read this fast!
 
 function startInterval() {
     interval = setInterval(function() {
@@ -147,3 +184,5 @@ document.getElementById('loadQuote').addEventListener("click", printQuote, false
 // I updated the css with these 2 id's so they take over the styling of the already existing button
 document.getElementById('startInterval').addEventListener("click", startInterval, false);
 document.getElementById('stopInterval').addEventListener("click", stopInterval, false);
+
+// I think there are more text comments in this document than actual code, sorry!
