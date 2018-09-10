@@ -15,7 +15,7 @@
 // https://www.brainyquote.com/
 // pinterest
 // google
-var quotes = [
+const quotes = [
     {
         quote: "One good thing about music, when it hits you, you feel no pain.",
         source: "Bob Marley",
@@ -55,14 +55,12 @@ var quotes = [
 // I did not know there are so many ways to get the current date: https://stackoverflow.com/questions/1531093/how-do-i-get-the-current-date-in-javascript
 
 // When making the random RGB color I saw I could reuse this random number part from the getRandomQuote function
-function getRandomNumber(topNumber) {
-    return Math.floor(Math.random() * topNumber);
-} 
+const getRandomNumber = topNumber => Math.floor(Math.random() * topNumber);
 
 // Create the getRandomQuuote function and name it getRandomQuote
-function getRandomQuote() {
+const getRandomQuote = () => {
     // so randomNumbers gets a number between 0 and whatever the lenght of the quotes array is
-    var randomNumber = getRandomNumber(quotes.length);
+    const randomNumber = getRandomNumber(quotes.length);
     // I get a randomQuote Object by taking my quotes array and add the randomNumber to it
     // this way the random number acts like an index number for the array and pics a quote Object from the array
     // I return it because this function needs to be called in the printQuote function
@@ -74,17 +72,15 @@ function getRandomQuote() {
 
 // I remember the random RGB generator from the course
 // So I wrote that myself here
-function randomBackgroundColor() {
-    // and RGB value ranges from 0 to 255
-    // the topNumber should thus be 255
-    return 'rgb('+ getRandomNumber(255)+','+getRandomNumber(255)+','+getRandomNumber(255)+')';
-}
+// and RGB value ranges from 0 to 255
+// the topNumber should thus be 255
+const randomBackgroundColor = () => 'rgb('+ getRandomNumber(255)+','+getRandomNumber(255)+','+getRandomNumber(255)+')';
 
 // I made a buildString function to build the correct template
-function buildTemplate(randomQuote) {
+const buildTemplate = (randomQuote) => {
     // build the html with the recieved argument
     // add the qoute to the stringTemplate variable
-    var stringTemplate = '<p class="quote">'+randomQuote.quote+'</p>';
+    let stringTemplate = '<p class="quote">'+randomQuote.quote+'</p>';
 
     // I know this is not requested but i want it :)
     if(randomQuote.source) {
@@ -109,7 +105,7 @@ function buildTemplate(randomQuote) {
     }
 
     if(randomQuote.categorization) {
-        var categorization = randomQuote.categorization;
+        const categorization = randomQuote.categorization;
 
         if(typeof categorization === 'string') {
             // I asume that when it is a string there is only one category
@@ -127,7 +123,7 @@ function buildTemplate(randomQuote) {
             // start categories template
             stringTemplate += '<p>categories: <i>';
             // create a loop to loop over the array
-            for(var i = 0; i < categorization.length; i += 1 ) {
+            for(let i = 0; i < categorization.length; i += 1 ) {
                 // if not the last array item add a comma and white space
                 if(i !== (categorization.length - 1)) {
                     stringTemplate += categorization[i]+", ";    
@@ -147,11 +143,11 @@ function buildTemplate(randomQuote) {
 
 
 // Create the printQuote funtion and name it printQuote
-function printQuote() {
+const printQuote = () => {
     // get a randomQuote object and store it in the randomQuote variable
-    var randomQuote = getRandomQuote();
+    const randomQuote = getRandomQuote();
     // get the element with id 'quote-box'
-    var quoteBox = document.getElementById('quote-box');
+    const quoteBox = document.getElementById('quote-box');
     // set quotebox's innerHtml to the builded template
     // pass the randomQuote as an argument to the buildTemplate function
     quoteBox.innerHTML = buildTemplate(randomQuote);
@@ -162,18 +158,16 @@ function printQuote() {
 
 // I build an interval interface with 2 buttons
 // one for starting it and one for stoping it
-var interval;
-var intervalTime = 1000; // I can't read this fast!
+let interval;
+const intervalTime = 1000; // I can't read this fast!
 
-function startInterval() {
+const startInterval = () => {
     interval = setInterval(function() {
         printQuote();
     }, intervalTime)
 }
 
-function stopInterval() {
-    clearInterval(interval);
-}
+const stopInterval = () => clearInterval(interval);
 
 // This event listener will respond to "Show another quote" button clicks
 // when user clicks anywhere on the button, the "printQuote" function is called
